@@ -5,7 +5,7 @@ const SearchPanel = () => {
   return (
     <input
     className='new-todo'
-    placeholder={searchText} />
+    placeholder={searchText} defaultValue=""/>
   );
 };
 

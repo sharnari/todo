@@ -1,4 +1,5 @@
 import "./app-header.css";
+
 import SearchPanel from "../search-panel";
 
 const AppHeader = () => {

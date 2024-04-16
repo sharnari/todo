@@ -27,7 +27,7 @@ App.propTypes = {
       label: PropTypes.string.isRequired,
       important: PropTypes.bool.isRequired,
       id: PropTypes.number.isRequired
-    })).isRequired
+    }))
 };
 
 export default App;

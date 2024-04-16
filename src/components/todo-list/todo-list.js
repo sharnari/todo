@@ -11,7 +11,7 @@ const TodoList = () => {
     return (
       <li key={item.id} className="">
         <TodoListItem {...item} />
-        <input type="text" className="edit" value="Editing task"></input>
+        <input type="text" className="edit"></input>
       </li>
     );
   });
