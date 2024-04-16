@@ -15,7 +15,8 @@ const App = () => {
     <TodosContext.Provider value={todoData}>
     <section className="todoapp">
     <AppHeader />
-    <AppMain todos={todoData}/>
+    <AppMain todos={todoData}
+    onDeleted={(id)=>console.log(id)}/>
   </section>
   </TodosContext.Provider>
   );

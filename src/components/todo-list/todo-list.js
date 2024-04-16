@@ -7,10 +7,14 @@ import "./todo-list.css";
 
 const TodoList = () => {
   const todos = useContext(TodosContext);
+  // const onDeleted = useContext(TodosContext.onDeleted);
   const elements = todos.map((item) => {
+    const {id, ...itemProps } = item;
     return (
-      <li key={item.id} className="">
-        <TodoListItem {...item} />
+      <li key={id} className="">
+        <TodoListItem
+        { ... itemProps }
+        onDeleted={ (id) => console.log(id)} />
         <input type="text" className="edit"></input>
       </li>
     );

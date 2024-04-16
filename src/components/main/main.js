@@ -5,7 +5,8 @@ import "./main.css";
 const AppMain = () => {
   return (
     <section className="main">
-      <TodoList />
+      <TodoList
+      onDeleted={(id) => console.log(id)}/>
       <Footer />
     </section>
   );

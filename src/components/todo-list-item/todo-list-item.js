@@ -15,7 +15,7 @@ export default class TodoListItem extends Component {
       });
     };
   render() {
-    const { label } = this.props;
+    const { label, onDeleted } = this.props;
     const { completed } = this.state;
     let classNames = '';
     if (completed) {
@@ -31,7 +31,8 @@ export default class TodoListItem extends Component {
           <span className="created">created 17 seconds ago</span>
         </label>
         <button className="icon icon-edit"></button>
-        <button className="icon icon-destroy"></button>
+        <button className="icon icon-destroy"
+        onClick={onDeleted}></button>
       </div>
       
     );
@@ -42,5 +43,5 @@ export default class TodoListItem extends Component {
 
 TodoListItem.propTypes = {
   label: PropTypes.string.isRequired,
-  important: PropTypes.bool.isRequired
+  onDeleted: PropTypes.func 
 };
