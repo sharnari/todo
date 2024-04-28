@@ -142,7 +142,7 @@
 	margin-bottom: -1px;
 }
 
-.todo-list li.completed label .description {
+.todo-list .completed label .description {
 	color: #cdcdcd;
 	text-decoration: line-through;
 }
