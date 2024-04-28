@@ -1,20 +1,20 @@
 import TodoListItem from "../todo-list-item";
 import { useContext } from "react";
 import TodosContext from "../../provide-context";
+import PropTypes from "prop-types";
 import "./todo-list.css";
 
 
 
-const TodoList = () => {
+const TodoList = ({onDeleted}) => {
   const todos = useContext(TodosContext);
-  // const onDeleted = useContext(TodosContext.onDeleted);
   const elements = todos.map((item) => {
     const {id, ...itemProps } = item;
     return (
       <li key={id} className="">
         <TodoListItem
         { ... itemProps }
-        onDeleted={ (id) => console.log(id)} />
+        onDeleted={ () => onDeleted(id)} />
         <input type="text" className="edit"></input>
       </li>
     );
@@ -26,4 +26,8 @@ const TodoList = () => {
   );
 };
 
+
+TodoList.propTypes = {
+  onDeleted: PropTypes.func.isRequired,
+};
 export default TodoList;

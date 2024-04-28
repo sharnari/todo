@@ -1,12 +1,12 @@
 import "./app-header.css";
 
-import SearchPanel from "../search-panel";
+import ItemAdd from "../item-add";
 
 const AppHeader = () => {
   return (
     <header className="header">
       <h1>Todos</h1>
-      <SearchPanel />
+      <ItemAdd />
     </header>
   );
 };

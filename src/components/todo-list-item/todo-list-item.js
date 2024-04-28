@@ -15,7 +15,7 @@ export default class TodoListItem extends Component {
       });
     };
   render() {
-    const { label, onDeleted } = this.props;
+    const { label, onDeleted} = this.props;
     const { completed } = this.state;
     let classNames = '';
     if (completed) {
@@ -32,7 +32,8 @@ export default class TodoListItem extends Component {
         </label>
         <button className="icon icon-edit"></button>
         <button className="icon icon-destroy"
-        onClick={onDeleted}></button>
+        onClick={onDeleted}
+        ></button>
       </div>
       
     );
