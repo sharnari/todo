@@ -5,6 +5,7 @@ import Footer from "../footer";
 import TodosContext from "../../provide-context";
 import PropTypes from "prop-types";
 import "./app.css";
+import "./normalize.css";
 
 
 export default class App extends Component {
