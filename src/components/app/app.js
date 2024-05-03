@@ -8,14 +8,23 @@ import "./app.css";
 
 
 export default class App extends Component {
+  maxId = 100;
   state = {
     todoData: [
-      {label: "Drink coffee", important: false, id: 1},
-      {label: "Make Awesome App", important: true, id: 2},
-      {label: "Спать режим", important: false, id: 3},
+      this.createTodoItem("Drink Coffee"),
+      this.createTodoItem("Make Awesome App"),
+      this.createTodoItem("Спать режим"),
     ]
   };
 
+  createTodoItem(label) {
+    return {
+      label,
+      important: false,
+      completed: false,
+      id: this.maxId++
+    };
+  }
   deleteItem = (id) => {
     this.setState(({ todoData }) => {
        const index = todoData.findIndex((el) => el.id === id);
@@ -29,18 +38,58 @@ export default class App extends Component {
    };
 
    addItem = (text) => {
-    console.log(text);
-   }
+    // generate id
+    const newItem = this.createTodoItem(text);
+    this.setState(({ todoData }) => {
+      const newArr = [
+        ...todoData,
+        newItem
+      ];
+      return{
+        todoData: newArr
+      }
+    });
+   };
+
+  onToggleProperty(arr, id, propName) {
+    const index = arr.findIndex((el) => el.id === id);
+    const oldItem = arr[index];
+    const newItem = {...oldItem,
+                   [propName]: !oldItem[propName]}
+    // 2. construct arr
+    const before = arr.slice(0, index);
+    const after = arr.slice(index + 1);
+    return [...before, newItem, ...after];
+  }
+   
+   onToggleImportant = (id) => {
+    console.log("Toggle important", id);
+   };
+
+   onToggleDone = (id) => {
+    this.setState(( {todoData} ) => {
+      return {
+        todoData: this.onToggleProperty(todoData, id, "completed")
+      };
+    })
+   };
 
   render () {
+    const { todoData : todoData } = this.state;
+    // лишнее-----------------------------------------------------------------------
+    const completedCount = todoData.filter((el) => el.completed).length;
+    const todoCount = todoData.length - completedCount; 
+    //------------------------------------------------------------------------------
     return (
-      <TodosContext.Provider value={this.state.todoData}>
+      <TodosContext.Provider value={todoData}>
       <section className="todoapp">
-      <AppHeader onAdded={this.addItem}/>
+      <AppHeader onAdded={ this.addItem } />
       <section className="main">
         <TodoList
-        todos={this.state.todoData}
-        onDeleted={ this.deleteItem }/>
+        todos={todoData}
+        onDeleted={ this.deleteItem }
+        onToggleImportant={this.onToggleImportant}
+        onToggleDone={this.onToggleDone}/>
         <Footer />
       </section>
     </section>

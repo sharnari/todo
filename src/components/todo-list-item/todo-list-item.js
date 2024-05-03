@@ -4,19 +4,9 @@ import { Component } from "react";
 
 
 export default class TodoListItem extends Component {
-  state = {
-    completed: false
-  };
-  onLabelClick = () => {
-      this.setState(({completed}) => {
-        return {
-          completed: !completed
-        }
-      });
-    };
   render() {
-    const { label, onDeleted} = this.props;
-    const { completed } = this.state;
+    const { label, onDeleted, onToggleDone, completed } = this.props;
+
     let classNames = '';
     if (completed) {
       classNames += ' completed';
@@ -26,13 +16,13 @@ export default class TodoListItem extends Component {
         <input className="toggle" type="checkbox" />
         <label>
           <span className="description"
-          onClick = { this.onLabelClick }>
+          onClick = { onToggleDone }>
             {label}</span>
           <span className="created">created 17 seconds ago</span>
         </label>
         <button className="icon icon-edit"></button>
         <button className="icon icon-destroy"
-        onClick={onDeleted}
+        onClick={ onDeleted }
         ></button>
       </div>
       
@@ -44,5 +34,8 @@ export default class TodoListItem extends Component {
 
 TodoListItem.propTypes = {
   label: PropTypes.string.isRequired,
-  onDeleted: PropTypes.func 
+  completed: PropTypes.bool,
+  onDeleted: PropTypes.func,
+  onToggleImportant: PropTypes.func,
+  onToggleDone: PropTypes.func, 
 };

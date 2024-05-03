@@ -6,7 +6,7 @@ import "./todo-list.css";
 
 
 
-const TodoList = ({onDeleted}) => {
+const TodoList = ({onDeleted, onToggleImportant, onToggleDone}) => {
   const todos = useContext(TodosContext);
   const elements = todos.map((item) => {
     const {id, ...itemProps } = item;
@@ -14,7 +14,9 @@ const TodoList = ({onDeleted}) => {
       <li key={id} className="">
         <TodoListItem
         { ... itemProps }
-        onDeleted={ () => onDeleted(id)} />
+        onDeleted={ () => onDeleted(id)}
+        onToggleImportant={() => onToggleImportant(id)}
+        onToggleDone={() => onToggleDone(id)} />
         <input type="text" className="edit"></input>
       </li>
     );
@@ -29,5 +31,7 @@ const TodoList = ({onDeleted}) => {
 
 TodoList.propTypes = {
   onDeleted: PropTypes.func.isRequired,
+  onToggleImportant: PropTypes.func.isRequired,
+  onToggleDone: PropTypes.func.isRequired,
 };
 export default TodoList;
