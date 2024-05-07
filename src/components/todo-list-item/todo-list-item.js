@@ -4,6 +4,11 @@ import { formatDistanceToNow } from "date-fns";
 import "./todo-list-item.css";
 
 export default class TodoListItem extends Component {
+  
+  static defaultProps = {
+    label: "default task",
+  }
+
   render() {
     const { label, onDeleted, onToggleDone, completed, timer, } = this.props;
 
@@ -29,11 +34,9 @@ export default class TodoListItem extends Component {
         onClick={ onDeleted }
         ></button>
       </div>
-      
     );
   }
 }
-
 
 TodoListItem.propTypes = {
   label: PropTypes.string.isRequired,

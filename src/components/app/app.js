@@ -7,7 +7,7 @@ import "./app.css";
 import "./normalize.css";
 
 export default class App extends Component {
-  maxId = 100;
+  maxId = 1;
   state = {
     todoData: [
       this.createTodoItem("Filter"),
