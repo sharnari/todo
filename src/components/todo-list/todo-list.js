@@ -10,9 +10,10 @@ const TodoList = ({onDeleted, onToggleDone, todos}) => {
     return (
       <li key={id} className="">
         <TodoListItem
-        { ... itemProps }
+        { ...itemProps }
         onDeleted={ () => onDeleted(id)}
-        onToggleDone={() => onToggleDone(id)} />
+        onToggleDone={() => onToggleDone(id)}
+        />
         <input type="text" className="edit"></input>
       </li>
     );
@@ -23,7 +24,6 @@ const TodoList = ({onDeleted, onToggleDone, todos}) => {
     </ul>
   );
 };
-
 
 TodoList.propTypes = {
   onDeleted: PropTypes.func.isRequired,

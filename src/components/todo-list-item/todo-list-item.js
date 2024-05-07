@@ -1,11 +1,11 @@
-import "./todo-list-item.css";
 import PropTypes from "prop-types";
 import { Component } from "react";
-
+import { formatDistanceToNow } from "date-fns";
+import "./todo-list-item.css";
 
 export default class TodoListItem extends Component {
   render() {
-    const { label, onDeleted, onToggleDone, completed } = this.props;
+    const { label, onDeleted, onToggleDone, completed, timer, } = this.props;
 
     let classNames = '';
     let checkedFlag = "";
@@ -22,7 +22,7 @@ export default class TodoListItem extends Component {
           <span className="description"
           onClick = { onToggleDone }>
             {label}</span>
-          <span className="created">created 17 seconds ago</span>
+          <span className="created">{ formatDistanceToNow(timer, { addSuffix: true, includeSeconds: true }) }</span>
         </label>
         <button className="icon icon-edit"></button>
         <button className="icon icon-destroy"
@@ -33,12 +33,12 @@ export default class TodoListItem extends Component {
     );
   }
 }
-  
 
 
 TodoListItem.propTypes = {
   label: PropTypes.string.isRequired,
   completed: PropTypes.bool,
   onDeleted: PropTypes.func,
-  onToggleDone: PropTypes.func, 
+  onToggleDone: PropTypes.func,
+  timer: PropTypes.instanceOf(Date),
 };

@@ -6,7 +6,6 @@ import PropTypes from "prop-types";
 import "./app.css";
 import "./normalize.css";
 
-
 export default class App extends Component {
   maxId = 100;
   state = {
@@ -23,7 +22,8 @@ export default class App extends Component {
     return {
       label,
       completed: false,
-      id: this.maxId++
+      id: this.maxId++,
+      timer: new Date(),
     };
   }
 
@@ -108,7 +108,7 @@ export default class App extends Component {
         <TodoList
         todos={ this.filterData(todoData, this.state.classFilter) }
         onDeleted={ this.deleteItem }
-        onToggleDone={ this.onToggleDone }/>
+        onToggleDone={ this.onToggleDone } />
         <Footer 
         unDoneCount={ unDoneCount }
         clearCompleted={ this.clearCompleted }
