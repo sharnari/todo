@@ -9,14 +9,8 @@
     "plugin:react/recommended",
     "plugin:prettier/recommended",
     "plugin:import/errors",
-    "plugin:react/jsx-runtime",
-    "plugin:import/warnings",
-    "airbnb/hooks",
-    "plugin:react-hooks/recommended",
-    "prettier",
-    "airbnb"
+    "plugin:import/warnings"
   ],
-  "parser": "@babel/eslint-parser",
   "parserOptions": {
     "ecmaFeatures": {
       "jsx": true
@@ -24,7 +18,7 @@
     "ecmaVersion": "latest",
     "sourceType": "module"
   },
-  "plugins": ["react", "prettier", "import", "jsx-a11y"],
+  "plugins": ["react", "prettier", "import"],
   "rules": {
     "indent": ["error", 2],
     "prettier/prettier": "error",
