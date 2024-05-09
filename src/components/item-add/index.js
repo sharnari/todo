@@ -1,3 +1,3 @@
-import ItemAdd from "./item-add";
+import ItemAdd from './item-add'
 
-export default ItemAdd;
+export default ItemAdd

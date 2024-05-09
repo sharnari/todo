@@ -1,19 +1,22 @@
-import "./app-header.css";
-import { Component } from "react";
-import PropTypes from "prop-types";
-import ItemAdd from "../item-add";
+import React from 'react'
+import './app-header.css'
+import PropTypes from 'prop-types'
 
-export default class AppHeader extends Component {
-  render () {
-    return (
-      <header className="header">
-        <h1>Todos</h1>
-        <ItemAdd onItemAdded={ this.props.onAdded }/>
-      </header>
-    );
-  }
+import ItemAdd from '../item-add'
+
+export default function AppHeader({ onAdded }) {
+  return (
+    <header className="header">
+      <h1>Todos</h1>
+      <ItemAdd onItemAdded={onAdded} />
+    </header>
+  )
+}
+
+AppHeader.defaultProps = {
+  onAdded: () => {},
 }
 
 AppHeader.propTypes = {
-  onAdded: PropTypes.func
-};
+  onAdded: PropTypes.func,
+}

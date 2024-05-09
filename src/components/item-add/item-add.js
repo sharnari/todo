@@ -1,42 +1,46 @@
-import { Component } from "react";
-import PropTypes from "prop-types";
-import "./item-add.css";
+import { Component, React } from 'react'
+import PropTypes from 'prop-types'
+import './item-add.css'
 
 export default class ItemAdd extends Component {
-  state = {
-    label: ""
+  constructor(props) {
+    super(props)
+    this.state = {
+      label: '',
+    }
   }
+
   onLabelChange = (e) => {
     this.setState({
       label: e.target.value,
-    });
-  };
+    })
+  }
 
   onSubmit = (e) => {
-    e.preventDefault();
-    this.props.onItemAdded(this.state.label);
+    e.preventDefault()
+    const { label } = this.state
+    const { onItemAdded } = this.props
+    onItemAdded(label)
     this.setState({
-      label: "",
-    });
-  };
+      label: '',
+    })
+  }
 
-  render () {
-    const addText = 'Click to add a task';
+  render() {
+    const addText = 'Click to add a task'
+    const { label } = this.state
     return (
-      <form className="item-add-form"
-      onSubmit={this.onSubmit}>
-        <input
-        type="text"
-        className='new-todo'
-        onChange={this.onLabelChange}
-        placeholder={addText}
-        value={this.state.label}
-        />
+      <form className="item-add-form" onSubmit={this.onSubmit}>
+        <input type="text" className="new-todo" onChange={this.onLabelChange} placeholder={addText} value={label} />
       </form>
-    );
+    )
   }
 }
 
+ItemAdd.defaultProps = {
+  onItemAdded: () => {},
+}
+
 ItemAdd.propTypes = {
-  onItemAdded: PropTypes.func 
-};
+  onItemAdded: PropTypes.func,
+}
