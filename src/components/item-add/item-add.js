@@ -20,7 +20,7 @@ export default class ItemAdd extends Component {
     e.preventDefault()
     const { label } = this.state
     const { onItemAdded } = this.props
-    if (label !== '' && !/\s+/.test(label)) {
+    if (label !== '' && (!/\s+/.test(label) || /\S+/.test(label))) {
       onItemAdded(label)
     }
     this.setState({
