@@ -13,10 +13,6 @@ export default function AppHeader({ onAdded }) {
   )
 }
 
-AppHeader.defaultProps = {
-  onAdded: () => {},
-}
-
 AppHeader.propTypes = {
   onAdded: PropTypes.func,
 }

@@ -97,6 +97,10 @@ export default class App extends Component {
     }
   }
 
+  onEdit = () => {
+    console.log('fff')
+  }
+
   render() {
     const { todoData, classFilter } = this.state
     const unDoneCount = todoData.filter((el) => !el.completed).length
@@ -108,6 +112,7 @@ export default class App extends Component {
             todos={App.filterData(todoData, classFilter)}
             onDeleted={this.deleteItem}
             onToggleDone={this.onToggleDone}
+            onEdit={this.onEdit}
           />
           <Footer
             unDoneCount={unDoneCount}

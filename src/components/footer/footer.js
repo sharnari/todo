@@ -3,7 +3,7 @@ import './footer.css'
 import PropTypes from 'prop-types'
 
 export default function Footer(props) {
-  const { unDoneCount, clearCompleted, onSelectedFilter, selectedFilter } = props
+  const { unDoneCount = 0, clearCompleted, onSelectedFilter, selectedFilter = 'All' } = props
   return (
     <footer className="footer">
       <span className="todo-count"> {unDoneCount} items left</span>
@@ -41,13 +41,6 @@ export default function Footer(props) {
       </button>
     </footer>
   )
-}
-
-Footer.defaultProps = {
-  unDoneCount: 0,
-  clearCompleted: () => {},
-  onSelectedFilter: () => {},
-  selectedFilter: 'All',
 }
 
 Footer.propTypes = {
