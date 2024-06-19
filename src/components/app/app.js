@@ -22,14 +22,22 @@ export default class App extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      todoData: [
-        this.createTodoItem('Filter'),
-        this.createTodoItem('Feature change tasks'),
-        this.createTodoItem('Clear completed'),
-        this.createTodoItem('Create timer of task'),
-      ],
+      todoData: [],
       classFilter: 'All',
     }
+  }
+
+  componentDidMount() {
+    this.setState(() => {
+      return {
+        todoData: [
+          this.createTodoItem('Filter'),
+          this.createTodoItem('Feature change tasks'),
+          this.createTodoItem('Clear completed'),
+          this.createTodoItem('Create timer of task'),
+        ],
+      }
+    })
   }
 
   onSelectedFilter = (filter) => {
@@ -94,11 +102,42 @@ export default class App extends Component {
       completed: false,
       id: this.maxId,
       timer: new Date(),
+      editing: false,
     }
   }
 
-  onEdit = () => {
-    console.log('fff')
+  /*
+   * reverses the editing flag
+   */
+  onEdit = (id) => {
+    const { todoData } = this.state
+    const index = todoData.findIndex((el) => el.id === id)
+    const oldItem = todoData[index]
+    const newItem = {
+      ...oldItem,
+      editing: !oldItem.editing,
+    }
+    const before = todoData.slice(0, index)
+    const after = todoData.slice(index + 1)
+    this.setState(() => ({
+      todoData: [...before, newItem, ...after],
+    }))
+  }
+
+  updateLabel = (id, newLabel) => {
+    const { todoData } = this.state
+    const index = todoData.findIndex((el) => el.id === id)
+    const oldItem = todoData[index]
+    const newItem = {
+      ...oldItem,
+      label: newLabel,
+      editing: !oldItem.editing,
+    }
+    const before = todoData.slice(0, index)
+    const after = todoData.slice(index + 1)
+    this.setState(() => ({
+      todoData: [...before, newItem, ...after],
+    }))
   }
 
   render() {
@@ -113,6 +152,7 @@ export default class App extends Component {
             onDeleted={this.deleteItem}
             onToggleDone={this.onToggleDone}
             onEdit={this.onEdit}
+            updateLabel={this.updateLabel}
           />
           <Footer
             unDoneCount={unDoneCount}

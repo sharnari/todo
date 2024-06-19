@@ -9,6 +9,13 @@
   transform: rotate(90deg);
 }
 
+.editing {
+  width: 90%;
+  box-sizing: border-box;
+  font-size: 24px;
+  height: 58px;
+}
+
 .toggle-all + label:before {
   content: '❯';
   font-size: 22px;
@@ -145,4 +152,9 @@
 .todo-list .completed label .description {
   color: #cdcdcd;
   text-decoration: line-through;
+}
+
+.flexing-right {
+  display: flex;
+  justify-content: flex-end;
 }
