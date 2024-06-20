@@ -44,7 +44,7 @@ export default class ItemAdd extends Component {
         />
         <input type="text" className="new-todo small" placeholder={addMinutes} />
         <input type="text" className="new-todo small" placeholder={addSeconds} />
-        <button type="submit"></button> {/*Кнопа отправки формы, сделана для того, чтобы сработал input*/}
+        <button type="submit"></button> {/*Кнопа отправки формы сделана для того, чтобы сработал input*/}
       </form>
     )
   }
