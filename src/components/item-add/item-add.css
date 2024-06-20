@@ -4,3 +4,16 @@
   background: rgba(0, 0, 0, 0.003);
   box-shadow: inset 0 -2px 1px rgba(0, 0, 0, 0.03);
 }
+
+.item-add-form {
+  display: flex
+}
+
+.main {
+  flex: 4;
+}
+
+.new-todo.small {
+  flex: 1;
+  padding: 16px 5px 16px 5px;
+}

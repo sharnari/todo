@@ -6,7 +6,22 @@ import './todo-list-item.css'
 export default function TodoListItem(props) {
   const { id, label, onDeleted, onToggleDone, completed, timer, onEdit, editing, updateLabel } = props
   const [inputValue, setInputValue] = useState(label)
+  // const [timerTask, setTimerTask] = useState(0)
+  // const [timerTaskActive, setTimerTaskActive] = useState(false)
   const inputRef = useRef(null)
+  // const timerId = useRef(null)
+
+  // useEffect(() => {
+  //   if (timerTaskActive) {
+  //     timerId.current = setTimeout(() => {
+  //       setTimerTask((prev) => prev + 1)
+  //     }, 1000)
+  //   } else {
+  //     clearTimeout(timerId.current)
+  //   }
+  //   return () => clearTimeout(timerId.current)
+  // }, [timerTask, timerTaskActive])
+
   useEffect(() => {
     if (editing && inputRef.current) {
       inputRef.current.focus()
@@ -42,6 +57,16 @@ export default function TodoListItem(props) {
     }
   }
 
+  // const startTimer = () => {
+  //   if (!timerTaskActive) {
+  //     setTimerTaskActive(true)
+  //   }
+  // }
+
+  // const stopTimer = () => {
+  //   setTimerTaskActive(false)
+  // }
+
   const controlView = (editing) => {
     if (!editing) {
       return (
@@ -50,7 +75,10 @@ export default function TodoListItem(props) {
           <label>
             <span className="description" onClick={onToggleDone}>
               {label}
+              {/* {timerTask} сек. */}
             </span>
+            {/* <button type="button" className="icon icon-timer" onClick={startTimer}>S</button>
+            <button type="button" className="icon icon-stop-timer" onClick={stopTimer}>St</button> */}
             <span className="created">{formatDistanceToNow(timer, { addSuffix: true, includeSeconds: true })}</span>
           </label>
           <button type="button" className="icon icon-edit" onClick={onEdit} />
