@@ -4,21 +4,55 @@ import { formatDistanceToNow } from 'date-fns'
 import './todo-list-item.css'
 
 export default function TodoListItem(props) {
-  const { id, label, onDeleted, onToggleDone, completed, timer, onEdit, editing, updateLabel } = props
+  const {
+    id,
+    label,
+    onDeleted,
+    onToggleDone,
+    completed,
+    timer,
+    onEdit,
+    editing,
+    updateLabel,
+    timerStarted,
+    setTimerStarted,
+    accumulatedTime,
+    setAccumulatedTime,
+  } = props
+  const defaultTimer = 600 - accumulatedTime
   const [inputValue, setInputValue] = useState(label)
-  const [timerTask, setTimerTask] = useState(600)
+  const [timerTask, setTimerTask] = useState(defaultTimer)
   const [timerTaskActive, setTimerTaskActive] = useState(false)
   const inputRef = useRef(null)
   const timerId = useRef(null)
 
+  // componentWillUnmount analog
+  useEffect(() => {
+    if (timerStarted) {
+      console.log('помнит, чтобы был нажат start', timerStarted)
+      const elapsedTime = Math.floor((new Date() - new Date(timerStarted)) / 1000)
+      setTimerTask(defaultTimer - elapsedTime)
+      setTimerTaskActive(true)
+    } else {
+      console.log('не помнит, чтобы был нажат start', timerStarted)
+    }
+    return () => {
+      if (timerTaskActive) {
+        setTimerStarted(id, new Date())
+        setTimerTaskActive(false)
+        console.log('timer deleted')
+      }
+    }
+  }, [])
+
   useEffect(() => {
     if (timerTaskActive) {
+      setAccumulatedTime(id, 1)
       timerId.current = setTimeout(() => {
         setTimerTask((prev) => {
           if (prev > 0) {
             return prev - 1
           }
-          setTimerTaskActive(false)
           return prev
         })
       }, 1000)
@@ -28,6 +62,7 @@ export default function TodoListItem(props) {
     return () => clearTimeout(timerId.current)
   }, [timerTask, timerTaskActive])
 
+  // focus at input place
   useEffect(() => {
     if (editing && inputRef.current) {
       inputRef.current.focus()
@@ -51,7 +86,6 @@ export default function TodoListItem(props) {
     setInputValue(e.target.value)
   }
 
-  // не меняется editing так как onEdit не может запуститься из-за updateLabel
   const handleKeyDown = (e) => {
     if (e.key === 'Enter') {
       const newLabel = inputValue
@@ -69,14 +103,30 @@ export default function TodoListItem(props) {
     }
   }
 
+  // const diffSecond = (timeMore, timeLess) => {
+  //   const timeStampMore = timeMore.getTime()
+  //   const timeStampLess = timeLess.getTime()
+  //   const differentSeconds = Math.floor((timeStampMore - timeStampLess) / 1000)
+  //   return differentSeconds
+  // }
+
+  //-------------------------------------------------------------
   const startTimer = () => {
     if (!timerTaskActive) {
+      if (!timerStarted) {
+        setTimerStarted(id, new Date())
+        console.log('timer was start')
+      }
       setTimerTaskActive(true)
     }
   }
 
   const stopTimer = () => {
-    setTimerTaskActive(false)
+    if (timerTaskActive) {
+      setTimerStarted(id, null)
+      setTimerTaskActive(false)
+      console.log('timer was stoped')
+    }
   }
 
   const formatTime = (seconds) => {
@@ -93,15 +143,12 @@ export default function TodoListItem(props) {
           <label className="list-item__content">
             <span className="description" onClick={onToggleDone}>
               {label}
-              {/* {timerTask} сек. */}
             </span>
             <span className="timer">
               <button className="icon icon-play" onClick={startTimer}></button>
               <button className="icon icon-pause" onClick={stopTimer}></button>
               <span className="time">{formatTime(timerTask)}</span>
             </span>
-            {/* <button type="button" className="icon icon-timer" onClick={startTimer}>S</button>
-            <button type="button" className="icon icon-stop-timer" onClick={stopTimer}>St</button> */}
             <span className="created">{formatDistanceToNow(timer, { addSuffix: true, includeSeconds: true })}</span>
           </label>
           <button type="button" className="icon icon-edit" onClick={onEdit} />
@@ -138,4 +185,8 @@ TodoListItem.propTypes = {
   onEdit: PropTypes.func,
   editing: PropTypes.bool,
   updateLabel: PropTypes.func,
+  timerStarted: PropTypes.instanceOf(Date),
+  setTimerStarted: PropTypes.func,
+  setAccumulatedTime: PropTypes.func,
+  accumulatedTime: PropTypes.number,
 }

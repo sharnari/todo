@@ -103,7 +103,39 @@ export default class App extends Component {
       id: this.maxId,
       timer: new Date(),
       editing: false,
+      timerStarted: null,
+      accumulatedTime: 0,
     }
+  }
+
+  setAccumulatedTime = (id, newTimeSec) => {
+    const { todoData } = this.state
+    const index = todoData.findIndex((el) => el.id === id)
+    const oldItem = todoData[index]
+    const newItem = {
+      ...oldItem,
+      accumulatedTime: oldItem.accumulatedTime + newTimeSec,
+    }
+    const before = todoData.slice(0, index)
+    const after = todoData.slice(index + 1)
+    this.setState(() => ({
+      todoData: [...before, newItem, ...after],
+    }))
+  }
+
+  setTimerStarted = (id, newValue) => {
+    const { todoData } = this.state
+    const index = todoData.findIndex((el) => el.id === id)
+    const oldItem = todoData[index]
+    const newItem = {
+      ...oldItem,
+      timeStarted: newValue,
+    }
+    const before = todoData.slice(0, index)
+    const after = todoData.slice(index + 1)
+    this.setState(() => ({
+      todoData: [...before, newItem, ...after],
+    }))
   }
 
   /*
@@ -153,6 +185,8 @@ export default class App extends Component {
             onToggleDone={this.onToggleDone}
             onEdit={this.onEdit}
             updateLabel={this.updateLabel}
+            setTimerStarted={this.setTimerStarted}
+            setAccumulatedTime={this.setAccumulatedTime}
           />
           <Footer
             unDoneCount={unDoneCount}

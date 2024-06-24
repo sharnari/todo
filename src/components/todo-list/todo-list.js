@@ -4,7 +4,16 @@ import { React } from 'react'
 import TodoListItem from '../todo-list-item'
 import './todo-list.css'
 
-function TodoList({ onDeleted, onToggleDone, todos, onEdit, updateLabel }) {
+function TodoList({
+  onDeleted,
+  onToggleDone,
+  todos,
+  onEdit,
+  updateLabel,
+  setTimerTaskActive,
+  setTimerStarted,
+  setAccumulatedTime,
+}) {
   const elements = todos.map((item) => {
     const { id, ...itemProps } = item
     return (
@@ -16,6 +25,9 @@ function TodoList({ onDeleted, onToggleDone, todos, onEdit, updateLabel }) {
           onToggleDone={() => onToggleDone(id)}
           onEdit={() => onEdit(id)}
           updateLabel={updateLabel}
+          setTimerTaskActive={setTimerTaskActive}
+          setTimerStarted={setTimerStarted}
+          setAccumulatedTime={setAccumulatedTime}
         />
         <input type="text" className="edit" />
       </li>
@@ -29,6 +41,9 @@ TodoList.propTypes = {
   onEdit: PropTypes.func,
   onToggleDone: PropTypes.func,
   updateLabel: PropTypes.func,
+  setTimerTaskActive: PropTypes.func,
+  setTimerStarted: PropTypes.func,
+  setAccumulatedTime: PropTypes.func,
   todos: PropTypes.arrayOf(
     PropTypes.shape({
       label: PropTypes.string.isRequired,
