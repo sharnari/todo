@@ -6,7 +6,7 @@ import './todo-list-item.css'
 export default class TodoListItem extends Component {
   constructor(props) {
     super(props)
-    const defaultTimer = 600 /* - this.props.accumulatedTime*/
+    const defaultTimer = 600
     this.state = {
       inputValue: this.props.label,
       timerTask: defaultTimer,
@@ -17,22 +17,23 @@ export default class TodoListItem extends Component {
   }
 
   componentDidMount() {
-    this.setState({ timerTask: this.state.timerTask })
-    // if (this.props.setTimerStarted) {
-    //   const elapledTime = this.defaultTimer
-    //   this.setState({ timerTask: this.state.timerTask - elapledTime, timerTaskActive: true })
-    // }
-    // if (this.props.editing && this.inputRef.current) {
-    //   this.inputRef.current.focus()
-    // }
+    if (this.props.timerStarted) {
+      const elapsedTime = this.diffSecond(new Date(), this.props.timerStarted)
+      this.setState({ timerTaskActive: true, timerTask: Math.max(0, this.state.timerTask - elapsedTime) })
+    } else {
+      this.setState({ timerTask: Math.max(0, 600 - this.props.accumulatedTime) })
+    }
+    if (this.props.editing && this.inputRef.current) {
+      this.inputRef.current.focus()
+    }
   }
 
   componentDidUpdate(prevProps, prevState) {
     if (this.state.timerTaskActive && !prevState.timerTaskActive) {
-      this.props.setAccumulatedTime(this.props.id, 1)
       this.timerId = setInterval(() => {
         this.setState((prevState) => {
           if (prevState.timerTask > 0) {
+            this.props.setAccumulatedTime(this.props.id, 1)
             return { timerTask: prevState.timerTask - 1 }
           }
           return prevState
@@ -48,7 +49,6 @@ export default class TodoListItem extends Component {
 
   componentWillUnmount() {
     if (this.state.timerTaskActive) {
-      this.props.setTimerStarted(this.props.id, new Date())
       this.setState({ timerTaskActive: false })
     }
     clearInterval(this.timerId)
@@ -86,8 +86,10 @@ export default class TodoListItem extends Component {
 
   stopTimer = () => {
     if (this.state.timerTaskActive) {
-      this.props.setTimerStarted(this.props.id, null)
-      this.setState({ timerTaskActive: false })
+      if (this.props.timerStarted) {
+        this.props.setTimerStarted(this.props.id, null)
+        this.setState({ timerTaskActive: false })
+      }
     }
   }
 
@@ -95,6 +97,13 @@ export default class TodoListItem extends Component {
     const mins = Math.floor(seconds / 60)
     const secs = seconds % 60
     return `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`
+  }
+
+  diffSecond = (timeMore, timeLess) => {
+    const timeStampMore = timeMore.getTime()
+    const timeStampLess = timeLess.getTime()
+    const differentSeconds = Math.floor((timeStampMore - timeStampLess) / 1000)
+    return differentSeconds
   }
 
   render() {
@@ -106,6 +115,7 @@ export default class TodoListItem extends Component {
       classNames += ' completed'
       checkedFlag = true
     }
+
     const controlView = () => {
       if (!editing) {
         return (
@@ -162,10 +172,3 @@ TodoListItem.propTypes = {
   setAccumulatedTime: PropTypes.func,
   accumulatedTime: PropTypes.number,
 }
-
-// const diffSecond = (timeMore, timeLess) => {
-//   const timeStampMore = timeMore.getTime()
-//   const timeStampLess = timeLess.getTime()
-//   const differentSeconds = Math.floor((timeStampMore - timeStampLess) / 1000)
-//   return differentSeconds
-// }

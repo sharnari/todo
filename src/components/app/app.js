@@ -129,7 +129,7 @@ export default class App extends Component {
     const oldItem = todoData[index]
     const newItem = {
       ...oldItem,
-      timeStarted: newValue,
+      timerStarted: newValue,
     }
     const before = todoData.slice(0, index)
     const after = todoData.slice(index + 1)
