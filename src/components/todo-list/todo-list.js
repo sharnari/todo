@@ -11,8 +11,9 @@ function TodoList({
   onEdit,
   updateLabel,
   setTimerTaskActive,
-  setTimerStarted,
+  setIsTimerStart,
   setAccumulatedTime,
+  setDateUnmount,
 }) {
   const elements = todos.map((item) => {
     const { id, ...itemProps } = item
@@ -26,8 +27,9 @@ function TodoList({
           onEdit={() => onEdit(id)}
           updateLabel={updateLabel}
           setTimerTaskActive={setTimerTaskActive}
-          setTimerStarted={setTimerStarted}
+          setIsTimerStart={setIsTimerStart}
           setAccumulatedTime={setAccumulatedTime}
+          setDateUnmount={setDateUnmount}
         />
         <input type="text" className="edit" />
       </li>
@@ -42,8 +44,9 @@ TodoList.propTypes = {
   onToggleDone: PropTypes.func,
   updateLabel: PropTypes.func,
   setTimerTaskActive: PropTypes.func,
-  setTimerStarted: PropTypes.func,
+  setIsTimerStart: PropTypes.func,
   setAccumulatedTime: PropTypes.func,
+  setDateUnmount: PropTypes.func,
   todos: PropTypes.arrayOf(
     PropTypes.shape({
       label: PropTypes.string.isRequired,
@@ -51,6 +54,7 @@ TodoList.propTypes = {
       id: PropTypes.number.isRequired,
       timer: PropTypes.instanceOf(Date),
       editing: PropTypes.bool,
+      seconds: PropTypes.number,
     })
   ),
 }

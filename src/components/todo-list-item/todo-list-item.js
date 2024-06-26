@@ -6,10 +6,9 @@ import './todo-list-item.css'
 export default class TodoListItem extends Component {
   constructor(props) {
     super(props)
-    const defaultTimer = 600
     this.state = {
       inputValue: this.props.label,
-      timerTask: defaultTimer,
+      timerTask: this.props.seconds,
       timerTaskActive: false,
     }
     this.inputRef = createRef()
@@ -17,15 +16,18 @@ export default class TodoListItem extends Component {
   }
 
   componentDidMount() {
-    if (this.props.timerStarted) {
-      const elapsedTime = this.diffSecond(new Date(), this.props.timerStarted)
-      this.setState({ timerTaskActive: true, timerTask: Math.max(0, this.state.timerTask - elapsedTime) })
-    } else {
-      this.setState({ timerTask: Math.max(0, 600 - this.props.accumulatedTime) })
-    }
     if (this.props.editing && this.inputRef.current) {
       this.inputRef.current.focus()
     }
+    let unMountTime = 0
+    if (this.props.isTimerStart) {
+      if (this.props.dateUnmount) {
+        unMountTime = this.diffSecond(new Date(), this.props.dateUnmount)
+      }
+      this.props.setAccumulatedTime(this.props.id, unMountTime)
+      this.props.setIsTimerStart(this.props.id, true)
+      this.setState({ timerTaskActive: true, timerTask: this.props.seconds - this.props.accumulatedTime - unMountTime })
+    } else this.setState({ timerTask: this.props.seconds - this.props.accumulatedTime - unMountTime })
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -50,6 +52,7 @@ export default class TodoListItem extends Component {
   componentWillUnmount() {
     if (this.state.timerTaskActive) {
       this.setState({ timerTaskActive: false })
+      this.props.setDateUnmount(this.props.id, new Date())
     }
     clearInterval(this.timerId)
   }
@@ -77,8 +80,8 @@ export default class TodoListItem extends Component {
 
   startTimer = () => {
     if (!this.state.timerTaskActive) {
-      if (!this.props.timerStarted) {
-        this.props.setTimerStarted(this.props.id, new Date())
+      if (!this.props.isTimerStart) {
+        this.props.setIsTimerStart(this.props.id, true)
       }
       this.setState({ timerTaskActive: true })
     }
@@ -86,8 +89,8 @@ export default class TodoListItem extends Component {
 
   stopTimer = () => {
     if (this.state.timerTaskActive) {
-      if (this.props.timerStarted) {
-        this.props.setTimerStarted(this.props.id, null)
+      if (this.props.isTimerStart) {
+        this.props.setIsTimerStart(this.props.id, null)
         this.setState({ timerTaskActive: false })
       }
     }
@@ -167,8 +170,11 @@ TodoListItem.propTypes = {
   onEdit: PropTypes.func,
   editing: PropTypes.bool,
   updateLabel: PropTypes.func,
-  timerStarted: PropTypes.instanceOf(Date),
-  setTimerStarted: PropTypes.func,
+  isTimerStart: PropTypes.bool,
+  setIsTimerStart: PropTypes.func,
   setAccumulatedTime: PropTypes.func,
   accumulatedTime: PropTypes.number,
+  setDateUnmount: PropTypes.func,
+  dateUnmount: PropTypes.instanceOf(Date),
+  seconds: PropTypes.number,
 }

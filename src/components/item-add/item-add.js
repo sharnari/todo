@@ -7,6 +7,8 @@ export default class ItemAdd extends Component {
     super(props)
     this.state = {
       label: '',
+      min: '',
+      sec: '',
     }
   }
 
@@ -16,15 +18,37 @@ export default class ItemAdd extends Component {
     })
   }
 
+  isOnlyNumber = (value) => {
+    return /^\d+$/.test(value)
+  }
+
+  onMinutesChange = (e) => {
+    if (this.isOnlyNumber(e.target.value) || e.target.value === '') {
+      this.setState({
+        min: e.target.value,
+      })
+    }
+  }
+
+  onSecondsChange = (e) => {
+    if (this.isOnlyNumber(e.target.value) || e.target.value === '') {
+      this.setState({
+        sec: e.target.value,
+      })
+    }
+  }
+
   onSubmit = (e) => {
     e.preventDefault()
     const { label } = this.state
     const { onItemAdded } = this.props
     if (label !== '' && (!/\s+/.test(label) || /\S+/.test(label))) {
-      onItemAdded(label)
+      onItemAdded(label, Number(this.state.min) * 60 + Number(this.state.sec))
     }
     this.setState({
       label: '',
+      min: '',
+      sec: '',
     })
   }
 
@@ -32,7 +56,7 @@ export default class ItemAdd extends Component {
     const addText = 'Click to add a task'
     const addMinutes = 'Min'
     const addSeconds = 'Sec'
-    const { label } = this.state
+    const { label, min, sec } = this.state
     return (
       <form className="item-add-form" onSubmit={this.onSubmit}>
         <input
@@ -42,8 +66,20 @@ export default class ItemAdd extends Component {
           placeholder={addText}
           value={label}
         />
-        <input type="text" className="new-todo small" placeholder={addMinutes} />
-        <input type="text" className="new-todo small" placeholder={addSeconds} />
+        <input
+          type="text"
+          className="new-todo small"
+          onChange={this.onMinutesChange}
+          value={min}
+          placeholder={addMinutes}
+        />
+        <input
+          type="text"
+          className="new-todo small"
+          onChange={this.onSecondsChange}
+          value={sec}
+          placeholder={addSeconds}
+        />
         <button type="submit"></button> {/*Кнопа отправки формы сделана для того, чтобы сработал input*/}
       </form>
     )

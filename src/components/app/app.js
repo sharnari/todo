@@ -58,8 +58,8 @@ export default class App extends Component {
     return [...before, newItem, ...after]
   }
 
-  addItem = (text) => {
-    const newItem = this.createTodoItem(text)
+  addItem = (text, seconds) => {
+    const newItem = this.createTodoItem(text, seconds)
     this.setState(({ todoData }) => {
       const newArr = [...todoData, newItem]
       return {
@@ -95,7 +95,7 @@ export default class App extends Component {
     }))
   }
 
-  createTodoItem(label) {
+  createTodoItem(label, seconds = 600) {
     this.maxId += 1
     return {
       label,
@@ -103,9 +103,26 @@ export default class App extends Component {
       id: this.maxId,
       timer: new Date(),
       editing: false,
-      timerStarted: null,
+      isTimerStart: false,
       accumulatedTime: 0,
+      dateUnmount: null,
+      seconds: seconds,
     }
+  }
+
+  setDateUnmount = (id, unMountDate) => {
+    const { todoData } = this.state
+    const index = todoData.findIndex((el) => el.id === id)
+    const oldItem = todoData[index]
+    const newItem = {
+      ...oldItem,
+      dateUnmount: unMountDate,
+    }
+    const before = todoData.slice(0, index)
+    const after = todoData.slice(index + 1)
+    this.setState(() => ({
+      todoData: [...before, newItem, ...after],
+    }))
   }
 
   setAccumulatedTime = (id, newTimeSec) => {
@@ -123,13 +140,13 @@ export default class App extends Component {
     }))
   }
 
-  setTimerStarted = (id, newValue) => {
+  setIsTimerStart = (id, isStarted) => {
     const { todoData } = this.state
     const index = todoData.findIndex((el) => el.id === id)
     const oldItem = todoData[index]
     const newItem = {
       ...oldItem,
-      timerStarted: newValue,
+      isTimerStart: isStarted,
     }
     const before = todoData.slice(0, index)
     const after = todoData.slice(index + 1)
@@ -185,8 +202,9 @@ export default class App extends Component {
             onToggleDone={this.onToggleDone}
             onEdit={this.onEdit}
             updateLabel={this.updateLabel}
-            setTimerStarted={this.setTimerStarted}
+            setIsTimerStart={this.setIsTimerStart}
             setAccumulatedTime={this.setAccumulatedTime}
+            setDateUnmount={this.setDateUnmount}
           />
           <Footer
             unDoneCount={unDoneCount}
