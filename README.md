@@ -1,3 +1,3 @@
-Todo Application
-https://todo-five-green-78.vercel.app/
+Todo Application with timer
+https://todo-so2i.vercel.app/
 
