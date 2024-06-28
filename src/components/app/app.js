@@ -80,6 +80,7 @@ export default class App extends Component {
   deleteItem = (id) => {
     this.setState(({ todoData }) => {
       const index = todoData.findIndex((el) => el.id === id)
+      if (index === -1) return
       const before = todoData.slice(0, index)
       const after = todoData.slice(index + 1)
       const newArray = [...before, ...after]

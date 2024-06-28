@@ -49,10 +49,19 @@ export default class TodoListItem extends Component {
     }
   }
 
+  // componentWillUnmount() {
+  //   if (this.state.timerTaskActive) {
+  //     this.setState({ timerTaskActive: false })
+  //     if (this.props.id) {
+  //       this.props.setDateUnmount(this.props.id, new Date())
+  //     }
+  //   }
+  //   clearInterval(this.timerId)
+  // }
+
   componentWillUnmount() {
     if (this.state.timerTaskActive) {
       this.setState({ timerTaskActive: false })
-      this.props.setDateUnmount(this.props.id, new Date())
     }
     clearInterval(this.timerId)
   }
@@ -161,8 +170,8 @@ export default class TodoListItem extends Component {
 }
 
 TodoListItem.propTypes = {
-  id: PropTypes.number.isRequired,
-  label: PropTypes.string.isRequired,
+  id: PropTypes.number,
+  label: PropTypes.string,
   completed: PropTypes.bool,
   onDeleted: PropTypes.func,
   onToggleDone: PropTypes.func,

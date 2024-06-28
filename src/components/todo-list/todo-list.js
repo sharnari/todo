@@ -49,9 +49,9 @@ TodoList.propTypes = {
   setDateUnmount: PropTypes.func,
   todos: PropTypes.arrayOf(
     PropTypes.shape({
-      label: PropTypes.string.isRequired,
-      completed: PropTypes.bool.isRequired,
-      id: PropTypes.number.isRequired,
+      label: PropTypes.string,
+      completed: PropTypes.bool,
+      id: PropTypes.number,
       timer: PropTypes.instanceOf(Date),
       editing: PropTypes.bool,
       seconds: PropTypes.number,
