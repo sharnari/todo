@@ -69,7 +69,6 @@ export default class TodoListItem extends Component {
     }
 
     const controlView = () => {
-      console.log(timer, this.props.isTimerStart)
       const { setIsTimerStart, setIsTimerStop } = this.props
       if (!editing) {
         return (
