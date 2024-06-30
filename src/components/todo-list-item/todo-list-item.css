@@ -159,11 +159,11 @@
 .icon-pause::after {
   position: relative;
 	content: '⏸';
-  left: -27px;
+  left: -28px;
 }
 
 .icon-play::after {
   position: relative;
 	content: '▶';
-  left: -47px;
+  left: -46px;
 }

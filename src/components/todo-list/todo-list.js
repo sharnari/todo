@@ -4,17 +4,7 @@ import { React } from 'react'
 import TodoListItem from '../todo-list-item'
 import './todo-list.css'
 
-function TodoList({
-  onDeleted,
-  onToggleDone,
-  todos,
-  onEdit,
-  updateLabel,
-  setTimerTaskActive,
-  setIsTimerStart,
-  setAccumulatedTime,
-  setDateUnmount,
-}) {
+function TodoList({ onDeleted, onToggleDone, todos, onEdit, updateLabel, setIsTimerStart, setIsTimerStop }) {
   const elements = todos.map((item) => {
     const { id, ...itemProps } = item
     return (
@@ -26,10 +16,8 @@ function TodoList({
           onToggleDone={() => onToggleDone(id)}
           onEdit={() => onEdit(id)}
           updateLabel={updateLabel}
-          setTimerTaskActive={setTimerTaskActive}
-          setIsTimerStart={setIsTimerStart}
-          setAccumulatedTime={setAccumulatedTime}
-          setDateUnmount={setDateUnmount}
+          setIsTimerStart={() => setIsTimerStart(id)}
+          setIsTimerStop={() => setIsTimerStop(id)}
         />
         <input type="text" className="edit" />
       </li>
@@ -43,10 +31,8 @@ TodoList.propTypes = {
   onEdit: PropTypes.func,
   onToggleDone: PropTypes.func,
   updateLabel: PropTypes.func,
-  setTimerTaskActive: PropTypes.func,
   setIsTimerStart: PropTypes.func,
-  setAccumulatedTime: PropTypes.func,
-  setDateUnmount: PropTypes.func,
+  setIsTimerStop: PropTypes.func,
   todos: PropTypes.arrayOf(
     PropTypes.shape({
       label: PropTypes.string,
@@ -54,7 +40,7 @@ TodoList.propTypes = {
       id: PropTypes.number,
       timer: PropTypes.instanceOf(Date),
       editing: PropTypes.bool,
-      seconds: PropTypes.number,
+      accumulatedTime: PropTypes.number,
     })
   ),
 }

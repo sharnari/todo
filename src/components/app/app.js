@@ -38,6 +38,24 @@ export default class App extends Component {
         ],
       }
     })
+    this.timerInterval = setInterval(this.setAccumulatedTime, 1000)
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.timerInterval)
+  }
+
+  setAccumulatedTime = () => {
+    const { todoData } = this.state
+    const newItems = todoData.map((item) => {
+      if (item.isTimerStart && item.accumulatedTime > 0) {
+        return { ...item, accumulatedTime: item.accumulatedTime - 1 }
+      }
+      return item
+    })
+    this.setState(() => ({
+      todoData: newItems,
+    }))
   }
 
   onSelectedFilter = (filter) => {
@@ -96,7 +114,7 @@ export default class App extends Component {
     }))
   }
 
-  createTodoItem(label, seconds = 600) {
+  createTodoItem(label, accumulatedTime = 600) {
     this.maxId += 1
     return {
       label,
@@ -105,19 +123,17 @@ export default class App extends Component {
       timer: new Date(),
       editing: false,
       isTimerStart: false,
-      accumulatedTime: 0,
-      dateUnmount: null,
-      seconds: seconds,
+      accumulatedTime,
     }
   }
 
-  setDateUnmount = (id, unMountDate) => {
+  setIsTimerStop = (id) => {
     const { todoData } = this.state
     const index = todoData.findIndex((el) => el.id === id)
     const oldItem = todoData[index]
     const newItem = {
       ...oldItem,
-      dateUnmount: unMountDate,
+      isTimerStart: false,
     }
     const before = todoData.slice(0, index)
     const after = todoData.slice(index + 1)
@@ -126,28 +142,13 @@ export default class App extends Component {
     }))
   }
 
-  setAccumulatedTime = (id, newTimeSec) => {
+  setIsTimerStart = (id) => {
     const { todoData } = this.state
     const index = todoData.findIndex((el) => el.id === id)
     const oldItem = todoData[index]
     const newItem = {
       ...oldItem,
-      accumulatedTime: oldItem.accumulatedTime + newTimeSec,
-    }
-    const before = todoData.slice(0, index)
-    const after = todoData.slice(index + 1)
-    this.setState(() => ({
-      todoData: [...before, newItem, ...after],
-    }))
-  }
-
-  setIsTimerStart = (id, isStarted) => {
-    const { todoData } = this.state
-    const index = todoData.findIndex((el) => el.id === id)
-    const oldItem = todoData[index]
-    const newItem = {
-      ...oldItem,
-      isTimerStart: isStarted,
+      isTimerStart: true,
     }
     const before = todoData.slice(0, index)
     const after = todoData.slice(index + 1)
@@ -204,8 +205,7 @@ export default class App extends Component {
             onEdit={this.onEdit}
             updateLabel={this.updateLabel}
             setIsTimerStart={this.setIsTimerStart}
-            setAccumulatedTime={this.setAccumulatedTime}
-            setDateUnmount={this.setDateUnmount}
+            setIsTimerStop={this.setIsTimerStop}
           />
           <Footer
             unDoneCount={unDoneCount}
