@@ -38,11 +38,23 @@ export default class App extends Component {
         ],
       }
     })
-    this.timerInterval = setInterval(this.setAccumulatedTime, 1000)
   }
 
   componentWillUnmount() {
-    clearInterval(this.timerInterval)
+    this.clearTimerInterval()
+  }
+
+  startTimerInterval = () => {
+    if (!this.timerInterval) {
+      this.timerInterval = setInterval(this.setAccumulatedTime, 1000)
+    }
+  }
+
+  clearTimerInterval = () => {
+    if (this.timerInterval) {
+      clearInterval(this.timerInterval)
+      this.timerInterval = null
+    }
   }
 
   setAccumulatedTime = () => {
@@ -86,7 +98,6 @@ export default class App extends Component {
     })
   }
 
-  // Deletes all completed tasks
   clearCompleted = () => {
     const { todoData } = this.state
     const listCompleted = todoData.filter((el) => el.completed)
@@ -102,6 +113,14 @@ export default class App extends Component {
       const before = todoData.slice(0, index)
       const after = todoData.slice(index + 1)
       const newArray = [...before, ...after]
+
+      // Check if any timers are still running
+      const anyTimerRunning = newArray.some((item) => item.isTimerStart)
+
+      if (!anyTimerRunning) {
+        this.clearTimerInterval()
+      }
+
       return {
         todoData: newArray,
       }
@@ -137,8 +156,17 @@ export default class App extends Component {
     }
     const before = todoData.slice(0, index)
     const after = todoData.slice(index + 1)
+    const newArray = [...before, newItem, ...after]
+
+    // Check if any timers are still running
+    const anyTimerRunning = newArray.some((item) => item.isTimerStart)
+
+    if (!anyTimerRunning) {
+      this.clearTimerInterval()
+    }
+
     this.setState(() => ({
-      todoData: [...before, newItem, ...after],
+      todoData: newArray,
     }))
   }
 
@@ -152,14 +180,16 @@ export default class App extends Component {
     }
     const before = todoData.slice(0, index)
     const after = todoData.slice(index + 1)
+    const newArray = [...before, newItem, ...after]
+
+    // Start the interval if it's not already running
+    this.startTimerInterval()
+
     this.setState(() => ({
-      todoData: [...before, newItem, ...after],
+      todoData: newArray,
     }))
   }
 
-  /*
-   * reverses the editing flag
-   */
   onEdit = (id) => {
     const { todoData } = this.state
     const index = todoData.findIndex((el) => el.id === id)
