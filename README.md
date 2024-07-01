@@ -1,2 +1,2 @@
 Todo Application with timer
-https://todowithtimer-7bhviqwy7-sharnaris-projects.vercel.app/
+https://newtimeroptimized-3oiocuxa9-sharnaris-projects.vercel.app/
