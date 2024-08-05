@@ -53,7 +53,7 @@ const App = () => {
   }
 
   const clearCompleted = () => {
-    setTodoData((prevTodoData) => prevTodoData.filter((el) => el.completed))
+    setTodoData(todoData.filter((el) => !el.completed))
   }
 
   const deleteItem = (id) => {
