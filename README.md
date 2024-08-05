@@ -1,3 +1,2 @@
-Todo Application
-https://todo-five-green-78.vercel.app/
-
+Todo Application with timer on hooks
+https://sharnari.github.io/todo/
