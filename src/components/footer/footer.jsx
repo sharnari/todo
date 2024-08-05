@@ -1,8 +1,7 @@
-import React from 'react'
 import './footer.css'
 import PropTypes from 'prop-types'
 
-export default function Footer(props) {
+const Footer = (props) => {
   const { unDoneCount = 0, clearCompleted, onSelectedFilter, selectedFilter = 'All' } = props
   return (
     <footer className="footer">
@@ -49,3 +48,5 @@ Footer.propTypes = {
   onSelectedFilter: PropTypes.func,
   selectedFilter: PropTypes.string,
 }
+
+export default Footer

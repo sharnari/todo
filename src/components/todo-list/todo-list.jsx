@@ -1,10 +1,9 @@
 import PropTypes from 'prop-types'
-import { React } from 'react'
 
 import TodoListItem from '../todo-list-item'
 import './todo-list.css'
 
-function TodoList({ onDeleted, onToggleDone, todos, onEdit, updateLabel, setIsTimerStart, setIsTimerStop }) {
+const TodoList = ({ onDeleted, onToggleDone, todos, onEdit, updateLabel, setIsTimerStart, setIsTimerStop }) => {
   const elements = todos.map((item) => {
     const { id, ...itemProps } = item
     return (

@@ -1,4 +1,4 @@
-import { Component, React } from 'react'
+import { Component } from 'react'
 
 import AppHeader from '../app-header'
 import TodoList from '../todo-list'
